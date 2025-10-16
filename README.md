@@ -41,30 +41,45 @@ This project is suited for home security, small establishments, or IoT learning 
 
 ## System Architecture
 
-     ┌──────────────┐
-     │   Sensor     │ ── interruption / trigger signals
-     └──────────────┘
-           │
-           ▼
-  ┌────────────────────┐
-  │ Microcontroller /  │
-  │   Embedded Board   │
-  └────────────────────┘
-           │
-           ▼
- ┌───────────────────────┐
- │ Communication Module   │ (WiFi / ESP / MQTT / HTTP / etc.)
- └───────────────────────┘
-           │
-           ▼
- ┌───────────────────────┐
- │ Remote Server / Cloud │  
- │ or Mobile / Dashboard  │
- └───────────────────────┘
+                      ┌─────────────────────────────────────────┐
+                   │           Cloud / IoT Server            │
+                   │ (e.g., ThingSpeak, Blynk, Adafruit IO)  │
+                   └─────────────────────────────────────────┘
+                                   ▲
+                                   │ Internet / Wi-Fi
+                                   ▼
+                ┌─────────────────────────────────────────┐
+                │        Microcontroller (ESP32/ESP8266)  │
+                │ - Central control unit                  │
+                │ - Reads all sensor inputs               │
+                │ - Sends data to IoT cloud               │
+                │ - Activates local alarms                │
+                └─────────────────────────────────────────┘
+                           ▲                    ▲
+                           │                    │
+             ┌─────────────┘                    └─────────────┐
+             │                                                │
+     ┌──────────────────────────┐                     ┌──────────────────────────┐
+     │  Layer 1: Laser Sensor   │                     │  Layer 2: PIR Sensor     │
+     │ - Detects beam interruption │                   │ - Detects human motion   │
+     │ - Acts as perimeter layer   │                   │ - Acts as area layer     │
+     └──────────────────────────┘                     └──────────────────────────┘
+             │                                                │
+             ▼                                                ▼
+         ┌─────────────────────────────────────────────────────────┐
+         │             Local Alert & Control Layer                 │
+         │   - Buzzer / Siren: activates on breach                 │
+         │   - LED Indicators: status display                      │
+         │   - Optional LCD / App Feedback                         │
+         └─────────────────────────────────────────────────────────┘
+                                   │
+                                   ▼
+                   ┌─────────────────────────────────────────┐
+                   │         Power Supply Unit               │
+                   │ - Provides regulated 5V/3.3V DC power   │
+                   │ - Can be battery or adapter-based       │
+                   └─────────────────────────────────────────┘
 
-Each layer monitors or reacts to breaches. The microcontroller is central, interacting with sensors, actuators (alarms), and network to send/receive data.
-
----
 
 ## Hardware Components
 
